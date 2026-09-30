@@ -10,6 +10,6 @@
     "dev": "node build.js && node serve.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   }
 }
