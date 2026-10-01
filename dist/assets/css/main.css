@@ -742,7 +742,7 @@ main>.section:first-of-type {
 /* Mobile nav */
 .mobile-nav {
   position: fixed;
-  inset: var(--header-h) 0 0 0;
+  inset: calc(var(--header-h) + 40px) 0 0 0;
   background: var(--bg);
   overflow-y: auto;
   padding: 12px var(--gutter) 40px;
@@ -4511,7 +4511,7 @@ h4 {
 
 /* Mobile menu */
 .mobile-nav {
-  inset: var(--header-h) 0 0 0;
+  inset: calc(var(--header-h) + 40px) 0 0 0;
 }
 
 .m-link {
