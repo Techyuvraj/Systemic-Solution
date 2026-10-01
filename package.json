@@ -1,0 +1,15 @@
+{
+  "name": "systemic-solution-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static website for Systemic Solution",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "node serve.js",
+    "dev": "node build.js && node serve.js"
+  },
+  "engines": {
+    "node": ">=24.x"
+  }
+}
