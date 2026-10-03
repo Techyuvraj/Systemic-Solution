@@ -61,7 +61,7 @@ begin
     || '<div class="header">'
     || '<span class="badge">' || form_label || '</span>'
     || '<h1 class="title">New Submission Received</h1>'
-    || '<p style="margin:0;font-size:13px;color:#94a3b8;">A visitor submitted details on systemic-solution.com</p>'
+    || '<p style="margin:0;font-size:13px;color:#94a3b8;">A visitor submitted details on systemicsolution.in</p>'
     || '</div>'
     || '<div class="body">'
     || '<div class="sec">Client Information</div>'
