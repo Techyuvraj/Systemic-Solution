@@ -761,12 +761,12 @@ const formStatus = () => `
 // data-endpoint: set to a form backend URL (Formspree, Netlify, own API…) to
 // POST submissions. While empty, the form opens a pre-filled email instead.
 const contactForm = () => `
-<form class="form" data-enquiry-form data-endpoint="" data-subject="Website enquiry" novalidate>
+<form class="form" data-enquiry-form data-form-type="contact" data-endpoint="" data-subject="Website enquiry" novalidate>
   <div class="form-grid">
     ${field({ id: 'name', label: 'Name', required: true, auto: 'name', err: 'Please enter your name.' })}
     ${field({ id: 'business', label: 'Business / Company Name', required: true, auto: 'organization', err: 'Please enter your business or company name.' })}
     ${field({ id: 'email', label: 'Email', type: 'email', required: true, auto: 'email', err: 'Please enter a valid email address.' })}
-    ${field({ id: 'phone', label: 'Phone', type: 'tel', required: true, auto: 'tel', err: 'Please enter a phone number.', attrs: 'inputmode="tel" pattern="[0-9+()\\-\\s]{7,}"' })}
+    ${field({ id: 'phone', label: 'Phone', type: 'tel', required: true, auto: 'tel', err: 'Please enter a phone number.', attrs: 'inputmode="tel" pattern="[0-9+\\(\\)\\s\\-]{7,}"' })}
     <div class="field span-2">
       <label for="service">Service Required <span class="req" aria-hidden="true">*</span></label>
       <div class="select-wrap"><select id="service" name="service" required aria-describedby="service-err">
@@ -823,14 +823,14 @@ ${pageHero({ trail, label: 'Request a Quote', h1: q.h1, intro: q.intro, cls: 'ce
 
 <section class="section quote-section" aria-label="Quotation request form">
   <div class="container quote-grid">
-    <form class="form form-card" data-enquiry-form data-endpoint="" data-subject="Quotation request" novalidate>
+    <form class="form form-card" data-enquiry-form data-form-type="quote" data-endpoint="" data-subject="Quotation request" novalidate>
       <fieldset class="q-step">
         <legend><span class="q-num">01</span> Your details</legend>
         <div class="form-grid">
           ${field({ id: 'name', label: 'Name', required: true, auto: 'name', err: 'Please enter your name.' })}
           ${field({ id: 'business', label: 'Business / Company Name', required: true, auto: 'organization', err: 'Please enter your business or company name.' })}
           ${field({ id: 'email', label: 'Email', type: 'email', required: true, auto: 'email', err: 'Please enter a valid email address.' })}
-          ${field({ id: 'phone', label: 'Phone', type: 'tel', required: true, auto: 'tel', err: 'Please enter a phone number.', attrs: 'inputmode="tel" pattern="[0-9+()\\-\\s]{7,}"' })}
+          ${field({ id: 'phone', label: 'Phone', type: 'tel', required: true, auto: 'tel', err: 'Please enter a phone number.', attrs: 'inputmode="tel" pattern="[0-9+\\(\\)\\s\\-]{7,}"' })}
         </div>
       </fieldset>
 
