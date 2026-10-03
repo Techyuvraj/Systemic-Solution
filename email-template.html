@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Systemic Solution — New Enquiry</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #060a1c;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #f1f5f9;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      width: 100%;
+      background-color: #060a1c;
+      padding: 40px 16px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #0d1527;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .accent-bar {
+      height: 4px;
+      background: linear-gradient(90deg, #00e5ff 0%, #3b82f6 50%, #8b5cf6 100%);
+    }
+
+    .header {
+      padding: 32px 32px 24px;
+      border-bottom: 1px solid #1e293b;
+      text-align: left;
+    }
+
+    .logo-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #00e5ff;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+      margin: 0;
+    }
+
+    .content {
+      padding: 28px 32px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #00e5ff;
+      margin: 0 0 16px 0;
+    }
+
+    .grid-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+      margin-bottom: 24px;
+    }
+
+    .grid-table td {
+      padding: 10px 14px;
+      background: #141f36;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .label-col {
+      width: 38%;
+      color: #94a3b8;
+      font-weight: 500;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .val-col {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .val-col a {
+      color: #00e5ff;
+      text-decoration: none;
+    }
+
+    .details-box {
+      background: #141f36;
+      border-left: 3px solid #00e5ff;
+      border-radius: 4px 8px 8px 4px;
+      padding: 16px;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
+
+    .btn-row {
+      text-align: center;
+      padding: 16px 0 8px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
+      color: #060a1c !important;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin: 0 6px 8px;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: #1e293b;
+      color: #ffffff !important;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      text-decoration: none;
+      margin: 0 6px 8px;
+    }
+
+    .footer {
+      padding: 24px 32px;
+      border-top: 1px solid #1e293b;
+      background: #090e1a;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .footer a {
+      color: #94a3b8;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="accent-bar"></div>
+
+      <!-- Header -->
+      <div class="header">
+        <span class="logo-badge">Systemic Solution Notification</span>
+        <h1 class="title">New {{form_type_label}} Received</h1>
+        <p class="subtitle">A visitor just submitted a new enquiry on your website.</p>
+      </div>
+
+      <!-- Main Body -->
+      <div class="content">
+        <div class="section-title">Client Details</div>
+        <table class="grid-table" role="presentation">
+          <tr>
+            <td class="label-col">Full Name</td>
+            <td class="val-col">{{name}}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Business / Company</td>
+            <td class="val-col">{{business}}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Email Address</td>
+            <td class="val-col"><a href="mailto:{{email}}">{{email}}</a></td>
+          </tr>
+          <tr>
+            <td class="label-col">Phone Number</td>
+            <td class="val-col"><a href="tel:{{phone}}">{{phone}}</a></td>
+          </tr>
+        </table>
+
+        <div class="section-title">Project Specifications</div>
+        <table class="grid-table" role="presentation">
+          <tr>
+            <td class="label-col">Service Required</td>
+            <td class="val-col">{{service}}</td>
+          </tr>
+          {{#if package}}
+          <tr>
+            <td class="label-col">Selected Package</td>
+            <td class="val-col">{{package}}</td>
+          </tr>
+          {{/if}}
+          {{#if products}}
+          <tr>
+            <td class="label-col">Product Count</td>
+            <td class="val-col">{{products}}</td>
+          </tr>
+          {{/if}}
+          {{#if deliverables}}
+          <tr>
+            <td class="label-col">Deliverables</td>
+            <td class="val-col">{{deliverables}}</td>
+          </tr>
+          {{/if}}
+          {{#if footage}}
+          <tr>
+            <td class="label-col">Raw Footage Info</td>
+            <td class="val-col">{{footage}}</td>
+          </tr>
+          {{/if}}
+          <tr>
+            <td class="label-col">Expected Timeline</td>
+            <td class="val-col">{{timeline}}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Budget Range</td>
+            <td class="val-col">{{budget}}</td>
+          </tr>
+        </table>
+
+        <div class="section-title">Project Description / Requirements</div>
+        <div class="details-box">{{details}}</div>
+
+        <!-- Direct Actions -->
+        <div class="btn-row">
+          <a class="btn-primary"
+            href="mailto:{{email}}?subject=Re:%20Systemic%20Solution%20Enquiry%20%E2%80%94%20{{name}}">Reply to
+            Client</a>
+          <a class="btn-secondary" href="tel:{{phone}}">Call Client</a>
+          <a class="btn-secondary" href="https://supabase.com/dashboard/project/addimjcmwkvxbehudush/editor"
+            target="_blank">View in Supabase</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

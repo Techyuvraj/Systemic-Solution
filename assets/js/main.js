@@ -92,8 +92,13 @@ if (filterWrap) {
 // Sync aria-invalid with :user-invalid so assistive tech hears errors at the same time they appear.
 const syncAria = (el) => {
   if (!el.matches?.('input, select, textarea')) return;
-  const bad = el.matches(':user-invalid') || el.classList.contains('is-invalid');
-  bad ? el.setAttribute('aria-invalid', 'true') : el.removeAttribute('aria-invalid');
+  try {
+    const bad = el.matches(':user-invalid') || el.classList.contains('is-invalid');
+    bad ? el.setAttribute('aria-invalid', 'true') : el.removeAttribute('aria-invalid');
+  } catch {
+    const bad = el.classList.contains('is-invalid') || (el.willValidate && !el.checkValidity());
+    bad ? el.setAttribute('aria-invalid', 'true') : el.removeAttribute('aria-invalid');
+  }
 };
 document.addEventListener('blur', (e) => syncAria(e.target), true);
 document.addEventListener('input', (e) => {
@@ -182,37 +187,87 @@ document.querySelectorAll('[data-enquiry-form]').forEach((form) => {
     const endpoint = form.dataset.endpoint;
     const body = collect();
     const submitBtn = form.querySelector('[type="submit"]');
+    const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
 
-    if (endpoint) {
+    // Collect structured data for database/Supabase
+    const collectData = () => {
+      const data = {};
+      const seen = new Set();
+      [...form.elements].forEach((el) => {
+        if (!el.name || seen.has(el.name) || el.type === 'submit' || el.closest('[hidden]')) return;
+        if (el.type === 'radio') {
+          seen.add(el.name);
+          const c = form.querySelector(`[name="${el.name}"]:checked`);
+          if (c && c.value) data[el.name] = c.value;
+        } else if (el.tagName === 'SELECT') {
+          if (el.value) data[el.name] = el.value;
+        } else if (el.value?.trim()) {
+          data[el.name] = el.value.trim();
+        }
+      });
+      data.form_type = form.dataset.formType || (form.dataset.subject?.toLowerCase().includes('quote') ? 'quote' : 'contact');
+      data.summary = body;
+      return data;
+    };
+
+    // Supabase Submission
+    const cfg = window.SUPABASE_CONFIG || {};
+    const url = `${(cfg.url || 'https://addimjcmwkvxbehudush.supabase.co').replace(/\/+$/, '')}/rest/v1/${cfg.tableName || 'enquiries'}`;
+    const anonKey = cfg.anonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkZGltamNtd2t2eGJlaHVkdXNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMDQyMzQsImV4cCI6MjEwNjU4MDIzNH0.bZQIvGYMRt_jbTPdCWeQpTPYx_gBHp904iiYpo4r6f4';
+
+    if (submitBtn) {
       submitBtn.disabled = true;
-      try {
-        const res = await fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-        if (!res.ok) throw new Error(res.status);
-        form.reset();
-        conds.forEach((c) => (c.hidden = true));
-        show('Thank you — your enquiry has been sent.', "We'll get back to you with the next steps.");
-      } catch {
-        show('Your enquiry could not be sent.', 'Please try again, or contact us directly by phone or email.', { error: true });
-      } finally {
-        submitBtn.disabled = false;
-      }
-      return;
+      submitBtn.textContent = 'Sending...';
     }
 
-    // No backend connected yet: hand the enquiry to the visitor's email app.
-    const to = 'mysystemicsolution@gmail.com';
-    const name = form.querySelector('[name="name"]')?.value || '';
-    const href = `mailto:${to}?subject=${encodeURIComponent(`${form.dataset.subject} — ${name}`)}&body=${encodeURIComponent(body)}`;
-    statusBox.querySelector('[data-fs-mailto]').href = href;
-    statusBox.querySelector('[data-fs-copy]').onclick = async (ev) => {
-      try { await navigator.clipboard.writeText(body); ev.currentTarget.lastChild.textContent = ' Copied'; } catch { /* clipboard unavailable */ }
-    };
-    window.location.href = href;
-    show(
-      'Almost there — please send the email.',
-      `Your email app should open with your enquiry filled in. Press Send there to deliver it to ${to}. If nothing opened, copy the enquiry text and email it to us.`,
-      { actions: true }
-    );
+    try {
+      const payload = collectData();
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          apikey: anonKey,
+          Authorization: `Bearer ${anonKey}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        const msg = errJson.message || `Error ${res.status}`;
+        throw new Error(msg);
+      }
+
+
+
+      // Send branded notification email to mysystemicsolution@gmail.com
+      try {
+        await fetch('/api/send-enquiry-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch (e) {
+        console.warn('Email dispatch notification:', e);
+      }
+
+      form.reset();
+      conds.forEach((c) => (c.hidden = true));
+      show('Thank you — your enquiry has been sent.', "We'll review your details and get back to you shortly.");
+    } catch (err) {
+      console.error('Supabase submission failed:', err);
+      const isRls = err.message && err.message.toLowerCase().includes('row-level security');
+      const detail = isRls
+        ? 'Database RLS policy is blocking inserts. Please run the SQL policy in Supabase.'
+        : 'Please check your connection and try again, or contact us directly.';
+      show('Your enquiry could not be sent.', detail, { error: true });
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      }
+    }
   });
 });
 

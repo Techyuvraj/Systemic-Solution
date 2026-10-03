@@ -10,6 +10,6 @@
     "dev": "node build.js && node serve.js"
   },
   "engines": {
-    "node": ">=24.x"
+    "node": "22.x"
   }
 }

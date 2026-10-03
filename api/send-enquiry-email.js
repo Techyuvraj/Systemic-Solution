@@ -1,32 +1,12 @@
-// Minimal local preview server for dist/ with clean URLs (/about/ → about/index.html)
-// and an automated email notification endpoint via Resend.
-import { createServer } from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
-import { existsSync, readFileSync } from 'node:fs';
-import { join, extname, normalize } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-// Load local .env if present
-if (existsSync('.env')) {
-  for (const line of readFileSync('.env', 'utf8').split('\n')) {
-    const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
-    if (match && !process.env[match[1]]) {
-      process.env[match[1]] = (match[2] || '').trim().replace(/^['"]|['"]$/g, '');
-    }
-  }
-}
-
-const dist = fileURLToPath(new URL('./dist', import.meta.url));
-const port = Number(process.env.PORT) || 4173;
-const types = {
-  '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml',
-  '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.xml': 'application/xml', '.txt': 'text/plain',
-};
-
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'mysystemicsolution@gmail.com';
 
-async function sendResendEmail(payload) {
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const payload = req.body || {};
   const formLabel = payload.form_type === 'quote' ? 'Quotation Request' : 'Website Enquiry';
   const badgeColor = payload.form_type === 'quote' ? '#8b5cf6' : '#00e5ff';
 
@@ -68,7 +48,7 @@ async function sendResendEmail(payload) {
 
         <div style="text-align:center;padding-top:8px;">
           <a href="mailto:${payload.email}?subject=Re:%20Systemic%20Solution%20Enquiry" style="display:inline-block;background:#00e5ff;color:#060a1c !important;font-weight:700;font-size:13px;padding:10px 20px;border-radius:6px;text-decoration:none;margin-right:8px;margin-bottom:8px;">Reply to Client</a>
-          <a href="tel:${payload.phone}" style="display:inline-block;background:#1e293b;color:#ffffff !important;font-weight:600;font-size:13px;padding:10px 18px;border-radius:6px;border:1px solid #334155;text-decoration:none;margin-right:8px;margin-bottom:8px;">Call Client</a>
+          <a href="tel:${payload.phone}" style="display:inline-block;background:#1e293b;color:#ffffff !important;font-weight:600;font-size:13px;padding:10px 18px;border-radius:6px;border-打击:#334155;text-decoration:none;margin-right:8px;margin-bottom:8px;">Call Client</a>
           <a href="https://supabase.com/dashboard/project/addimjcmwkvxbehudush/editor" target="_blank" style="display:inline-block;background:#1e293b;color:#ffffff !important;font-weight:600;font-size:13px;padding:10px 18px;border-radius:6px;border:1px solid #334155;text-decoration:none;margin-right:8px;margin-bottom:8px;">View in Supabase</a>
         </div>
       </div>
@@ -79,62 +59,30 @@ async function sendResendEmail(payload) {
   </div>
 </body></html>`;
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: 'Systemic Solution <onboarding@resend.dev>',
-      to: [NOTIFICATION_EMAIL],
-      reply_to: payload.email || undefined,
-      subject: `✨ New ${formLabel} from ${payload.name || 'Visitor'} (${payload.business || 'Individual'})`,
-      html,
-    }),
-  });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`Resend API returned ${res.status}: ${errText}`);
-  }
-  return await res.json();
-}
-
-createServer(async (req, res) => {
-  const url = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-
-  // Email API endpoint
-  if (req.method === 'POST' && url === '/api/send-enquiry-email') {
-    let body = '';
-    req.on('data', (chunk) => { body += chunk; });
-    req.on('end', async () => {
-      try {
-        const payload = JSON.parse(body || '{}');
-        const resendRes = await sendResendEmail(payload);
-        console.log(`[Email Sent] Delivered enquiry notification to ${NOTIFICATION_EMAIL} (ID: ${resendRes?.id})`);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: true, id: resendRes?.id }));
-      } catch (err) {
-        console.error('[Email Failed]:', err.message);
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, error: err.message }));
-      }
-    });
-    return;
-  }
-
-  let file = normalize(join(dist, url));
-  if (!file.startsWith(dist)) return res.writeHead(403).end();
   try {
-    if ((await stat(file)).isDirectory()) {
-      if (!url.endsWith('/')) return res.writeHead(301, { Location: url + '/' }).end();
-      file = join(file, 'index.html');
+    const resendRes = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Systemic Solution <onboarding@resend.dev>',
+        to: [NOTIFICATION_EMAIL],
+        reply_to: payload.email || undefined,
+        subject: `✨ New ${formLabel} from ${payload.name || 'Visitor'} (${payload.business || 'Individual'})`,
+        html,
+      }),
+    });
+
+    if (!resendRes.ok) {
+      const err = await resendRes.text();
+      return res.status(500).json({ error: err });
     }
-    res.writeHead(200, { 'Content-Type': types[extname(file)] || 'application/octet-stream' });
-    res.end(await readFile(file));
-  } catch {
-    res.writeHead(404, { 'Content-Type': types['.html'] });
-    res.end(await readFile(join(dist, '404.html')).catch(() => 'Not found'));
+
+    const data = await resendRes.json();
+    return res.status(200).json({ ok: true, id: data.id });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
   }
-}).listen(port, () => console.log(`Preview: http://localhost:${port}`));
+}

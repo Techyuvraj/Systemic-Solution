@@ -27,6 +27,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
+<script src="/assets/js/supabase-config.js" defer></script>
 <script src="/assets/js/main.js" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Systemic Solution","url":"https://your-domain.com/","logo":"https://your-domain.com/assets/img/logo-systemic-solution.png","email":"mysystemicsolution@gmail.com","telephone":["+91 7733897420","+91 87690 38848","+91 79769 13175"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://your-domain.com/"},{"@type":"ListItem","position":2,"name":"Request a Quote","item":"https://your-domain.com/request-a-quote/"}]}</script>
@@ -120,7 +121,7 @@
 
 <section class="section quote-section" aria-label="Quotation request form">
   <div class="container quote-grid">
-    <form class="form form-card" data-enquiry-form data-endpoint="" data-subject="Quotation request" novalidate>
+    <form class="form form-card" data-enquiry-form data-form-type="quote" data-endpoint="" data-subject="Quotation request" novalidate>
       <fieldset class="q-step">
         <legend><span class="q-num">01</span> Your details</legend>
         <div class="form-grid">
@@ -145,7 +146,7 @@
           <div class="field">
   <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
   
-  <input id="phone" name="phone" type="tel" required autocomplete="tel" aria-describedby="phone-err" placeholder="" inputmode="tel" pattern="[0-9+()\-\s]{7,}">
+  <input id="phone" name="phone" type="tel" required autocomplete="tel" aria-describedby="phone-err" placeholder="" inputmode="tel" pattern="[0-9+\(\)\s\-]{7,}">
   <p class="err" id="phone-err"><svg class="ico ico-sm" aria-hidden="true" focusable="false"><use href="#i-info"/></svg> Please enter a phone number.</p>
 </div>
         </div>

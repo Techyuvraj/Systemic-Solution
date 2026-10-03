@@ -200,6 +200,7 @@ export const page = ({ path, seo, body, ld = [], bodyClass = '' }) => {
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
+<script src="/assets/js/supabase-config.js" defer></script>
 <script src="/assets/js/main.js" defer></script>
 ${scripts}
 </head>
