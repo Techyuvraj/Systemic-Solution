@@ -118,12 +118,23 @@ const initPortfolioPopups = () => {
 
     const updateViewMode = () => {
       if (!lbStage) return;
+      const iconUse = lbToggleView?.querySelector('use');
       if (isFullHeight) {
         lbStage.classList.add('is-full-height');
         if (lbViewMode) lbViewMode.textContent = 'Fit Screen';
+        if (lbToggleView) {
+          lbToggleView.title = 'Fit to screen';
+          lbToggleView.setAttribute('aria-label', 'Fit to screen');
+          if (iconUse) iconUse.setAttribute('href', '#i-minimize');
+        }
       } else {
         lbStage.classList.remove('is-full-height');
         if (lbViewMode) lbViewMode.textContent = 'Full Height';
+        if (lbToggleView) {
+          lbToggleView.title = 'View full height';
+          lbToggleView.setAttribute('aria-label', 'View full height');
+          if (iconUse) iconUse.setAttribute('href', '#i-expand');
+        }
       }
     };
 

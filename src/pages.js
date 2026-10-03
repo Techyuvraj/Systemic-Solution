@@ -665,18 +665,19 @@ ${pageHero({ trail, label: 'Portfolio', h1: p.h1, intro: p.intro, cls: 'center-h
   <div class="pf-modal-backdrop" data-close-lightbox></div>
   <div class="pf-modal-container">
     <div class="pf-modal-header">
-      <div class="pf-modal-info">
-        <span class="pf-modal-cat" data-lb-cat></span>
-        <h3 class="pf-modal-title" data-lb-title></h3>
-      </div>
+      <span class="pf-modal-cat" data-lb-cat></span>
+      <h3 class="pf-modal-title" data-lb-title></h3>
       <div class="pf-modal-actions">
+        <span class="pf-modal-counter" data-lb-counter></span>
         <button type="button" class="pf-modal-btn pf-modal-zoom-btn" data-lb-toggle-view title="Toggle View Mode (Fit / Full Height)" aria-label="Toggle View Mode">
-          <span data-lb-view-mode>Full Height</span>
+          ${icon('expand', 'ico ico-sm pf-btn-icon')}
+          <span class="pf-btn-label" data-lb-view-mode>Full Height</span>
         </button>
         <a href="#" class="pf-modal-btn pf-modal-external-btn" data-lb-open-tab target="_blank" rel="noopener" title="Open high-res original in new tab" aria-label="Open high-res original in new tab">
-          ${icon('arrow-ur', 'ico ico-sm')} <span>High-Res</span>
+          ${icon('arrow-ur', 'ico ico-sm pf-btn-icon')}
+          <span class="pf-btn-label">High-Res</span>
         </a>
-        <button type="button" class="pf-modal-btn pf-modal-close" data-close-lightbox aria-label="Close dialog">
+        <button type="button" class="pf-modal-btn pf-modal-close" data-close-lightbox aria-label="Close dialog" title="Close">
           ${icon('close', 'ico')}
         </button>
       </div>
@@ -695,14 +696,6 @@ ${pageHero({ trail, label: 'Portfolio', h1: p.h1, intro: p.intro, cls: 'center-h
         ${icon('chevron', 'ico pf-rotate-next')}
       </button>
     </div>
-
-    <div class="pf-modal-footer">
-      <p class="pf-modal-desc" data-lb-desc></p>
-      <div class="pf-modal-meta-right">
-        <span class="pf-modal-dims" data-lb-dims></span>
-        <span class="pf-modal-counter" data-lb-counter>1 / 1</span>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -711,13 +704,14 @@ ${pageHero({ trail, label: 'Portfolio', h1: p.h1, intro: p.intro, cls: 'center-h
   <div class="pf-modal-backdrop" data-close-video></div>
   <div class="pf-modal-container pf-video-container">
     <div class="pf-modal-header">
-      <div class="pf-modal-info">
-        <span class="pf-modal-cat" data-vid-cat>Video Editing</span>
-        <h3 class="pf-modal-title" data-vid-title>Cinematic Film Logo Reveal</h3>
+      <span class="pf-modal-cat" data-vid-cat>Video Editing</span>
+      <h3 class="pf-modal-title" data-vid-title>Cinematic Film Logo Reveal</h3>
+      <div class="pf-modal-actions">
+        <span class="pf-video-quality-tag"><span class="live-dot" aria-hidden="true"></span> HD 720p</span>
+        <button type="button" class="pf-modal-btn pf-modal-close" data-close-video aria-label="Close video player" title="Close">
+          ${icon('close', 'ico')}
+        </button>
       </div>
-      <button type="button" class="pf-modal-btn pf-modal-close" data-close-video aria-label="Close video player">
-        ${icon('close', 'ico')}
-      </button>
     </div>
 
     <div class="pf-video-body">
@@ -726,13 +720,6 @@ ${pageHero({ trail, label: 'Portfolio', h1: p.h1, intro: p.intro, cls: 'center-h
           <source src="/assets/portfolio/video-editing/film-logo-reveal.mp4" type="video/mp4">
           Your browser does not support HTML5 video.
         </video>
-      </div>
-    </div>
-
-    <div class="pf-modal-footer">
-      <p class="pf-modal-desc" data-vid-desc></p>
-      <div class="pf-modal-meta-right">
-        <span class="pf-video-quality-tag"><span class="live-dot" aria-hidden="true"></span> HD 720p • 10s</span>
       </div>
     </div>
   </div>
