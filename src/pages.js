@@ -552,25 +552,99 @@ ${ctaBlock(v.cta, { href: '/request-a-quote/?service=video-editing', label: 'Req
 
 /* ---------- PORTFOLIO ---------- */
 
-const catIcon = { Websites: 'layout', 'E-Commerce Stores': 'cart', 'Graphic Design': 'pen', Branding: 'spark', 'Social Media Creatives': 'image', 'Video Editing': 'film' };
+const catIcon = {
+  'Brochure Design': 'file',
+  'Logo Design': 'pen',
+  'Mockup': 'box',
+  'Social Post': 'image',
+  'Video Editing': 'film',
+  'Visiting Card': 'card',
+  'Webpage Design': 'layout',
+};
 
 const portfolioPage = () => {
   const p = C.portfolio;
   const trail = [{ name: 'Portfolio', href: '/portfolio/' }];
   const cards = p.projects.length
     ? p.projects
-        .map(
-          (pr) => `<li class="work-card" data-cat="${slugify(pr.category)}"><figure><div class="work-media"><img src="${pr.image}" alt="${esc(pr.alt)}" loading="lazy" decoding="async" width="800" height="600"></div><figcaption><span class="work-cat">${pr.category}</span><h3 class="h4">${pr.title}</h3>${pr.summary ? `<p>${pr.summary}</p>` : ''}</figcaption></figure></li>`
-        )
+        .map((pr) => {
+          if (pr.type === 'video') {
+            return `<li class="work-card work-card-video" data-cat="${slugify(pr.category)}" data-type="video" id="${pr.id}">
+        <button type="button" class="work-card-trigger" data-video-trigger
+          data-video-src="${pr.videoUrl}"
+          data-title="${esc(pr.title)}"
+          data-cat="${pr.category}"
+          data-desc="${esc(pr.summary)}"
+          aria-label="Play video: ${esc(pr.title)}">
+          <figure>
+            <div class="work-media">
+              <img src="${pr.image}" alt="${esc(pr.alt)}" loading="lazy" decoding="async" width="800" height="600">
+              <div class="video-play-center" aria-hidden="true">
+                <span class="video-play-ripple"></span>
+                <span class="video-play-icon">${icon('play', 'ico')}</span>
+              </div>
+              <div class="work-media-overlay" aria-hidden="true">
+                <span class="work-view-btn work-view-btn-video">
+                  ${icon('play', 'ico ico-sm')} <span>Watch Video</span>
+                </span>
+                <span class="work-badge-video">${pr.duration || '0:10 HD'}</span>
+              </div>
+            </div>
+            <figcaption>
+              <div class="work-meta">
+                <span class="work-cat"><span class="live-dot" aria-hidden="true"></span> ${pr.category}</span>
+                <span class="work-dims">HD Video • 10s</span>
+              </div>
+              <h3 class="h4 work-title">${pr.title}</h3>
+              ${pr.summary ? `<p class="work-summary">${pr.summary}</p>` : ''}
+            </figcaption>
+          </figure>
+        </button>
+      </li>`;
+          }
+
+          return `<li class="work-card ${pr.isTall ? 'is-tall-design' : ''}" data-cat="${slugify(pr.category)}" data-type="image" id="${pr.id}">
+        <button type="button" class="work-card-trigger" data-lightbox-trigger
+          data-id="${pr.id}"
+          data-src="${pr.image}"
+          data-title="${esc(pr.title)}"
+          data-cat="${pr.category}"
+          data-desc="${esc(pr.summary || '')}"
+          data-dims="${pr.dimensions || ''}"
+          data-tall="${pr.isTall ? 'true' : 'false'}"
+          aria-label="View ${esc(pr.title)} in full size">
+          <figure>
+            <div class="work-media">
+              <img src="${pr.image}" alt="${esc(pr.alt)}" loading="lazy" decoding="async" width="800" height="600">
+              <div class="work-media-overlay" aria-hidden="true">
+                <span class="work-view-btn">
+                  ${icon('eye', 'ico ico-sm')} <span>View Full</span>
+                </span>
+                ${pr.isTall ? '<span class="work-badge-tall">Full Page</span>' : ''}
+              </div>
+            </div>
+            <figcaption>
+              <div class="work-meta">
+                <span class="work-cat">${pr.category}</span>
+                ${pr.dimensions ? `<span class="work-dims">${pr.dimensions}</span>` : ''}
+              </div>
+              <h3 class="h4 work-title">${pr.title}</h3>
+              ${pr.summary ? `<p class="work-summary">${pr.summary}</p>` : ''}
+            </figcaption>
+          </figure>
+        </button>
+      </li>`;
+        })
         .join('')
     : p.categories
         .map(
           (c, i) => `<li class="work-card is-placeholder" data-cat="${slugify(c)}" id="${slugify(c)}">
-      <div class="work-media ph-${(i % 4) + 1}" aria-hidden="true"><span class="ph-ico">${icon(catIcon[c])}</span><span class="ph-lines"></span></div>
+      <div class="work-media ph-${(i % 4) + 1}" aria-hidden="true"><span class="ph-ico">${icon(catIcon[c] || 'layout')}</span><span class="ph-lines"></span></div>
       <div class="work-cap"><span class="work-cat">${c}</span><p class="ph-note">Project to be added</p></div>
     </li>`
         )
         .join('');
+
   const body = `
 ${pageHero({ trail, label: 'Portfolio', h1: p.h1, intro: p.intro, cls: 'center-hero' })}
 
@@ -585,6 +659,84 @@ ${pageHero({ trail, label: 'Portfolio', h1: p.h1, intro: p.intro, cls: 'center-h
     <ul class="work-grid" role="list" data-work-grid>${cards}</ul>
   </div>
 </section>
+
+<!-- Lightbox Modal for Images -->
+<div class="pf-modal pf-lightbox-modal" id="portfolio-lightbox" role="dialog" aria-modal="true" aria-label="Portfolio Image Viewer" hidden>
+  <div class="pf-modal-backdrop" data-close-lightbox></div>
+  <div class="pf-modal-container">
+    <div class="pf-modal-header">
+      <div class="pf-modal-info">
+        <span class="pf-modal-cat" data-lb-cat></span>
+        <h3 class="pf-modal-title" data-lb-title></h3>
+      </div>
+      <div class="pf-modal-actions">
+        <button type="button" class="pf-modal-btn pf-modal-zoom-btn" data-lb-toggle-view title="Toggle View Mode (Fit / Full Height)" aria-label="Toggle View Mode">
+          <span data-lb-view-mode>Full Height</span>
+        </button>
+        <a href="#" class="pf-modal-btn pf-modal-external-btn" data-lb-open-tab target="_blank" rel="noopener" title="Open high-res original in new tab" aria-label="Open high-res original in new tab">
+          ${icon('arrow-ur', 'ico ico-sm')} <span>High-Res</span>
+        </a>
+        <button type="button" class="pf-modal-btn pf-modal-close" data-close-lightbox aria-label="Close dialog">
+          ${icon('close', 'ico')}
+        </button>
+      </div>
+    </div>
+    
+    <div class="pf-lightbox-body" data-lb-body>
+      <button type="button" class="pf-nav-btn pf-nav-prev" data-lb-prev aria-label="Previous image">
+        ${icon('chevron', 'ico pf-rotate-prev')}
+      </button>
+      
+      <div class="pf-img-stage" data-lb-stage>
+        <img src="" alt="" class="pf-full-img" data-lb-img>
+      </div>
+      
+      <button type="button" class="pf-nav-btn pf-nav-next" data-lb-next aria-label="Next image">
+        ${icon('chevron', 'ico pf-rotate-next')}
+      </button>
+    </div>
+
+    <div class="pf-modal-footer">
+      <p class="pf-modal-desc" data-lb-desc></p>
+      <div class="pf-modal-meta-right">
+        <span class="pf-modal-dims" data-lb-dims></span>
+        <span class="pf-modal-counter" data-lb-counter>1 / 1</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Video Popup Modal -->
+<div class="pf-modal pf-video-modal" id="portfolio-video-modal" role="dialog" aria-modal="true" aria-label="Portfolio Video Player" hidden>
+  <div class="pf-modal-backdrop" data-close-video></div>
+  <div class="pf-modal-container pf-video-container">
+    <div class="pf-modal-header">
+      <div class="pf-modal-info">
+        <span class="pf-modal-cat" data-vid-cat>Video Editing</span>
+        <h3 class="pf-modal-title" data-vid-title>Cinematic Film Logo Reveal</h3>
+      </div>
+      <button type="button" class="pf-modal-btn pf-modal-close" data-close-video aria-label="Close video player">
+        ${icon('close', 'ico')}
+      </button>
+    </div>
+
+    <div class="pf-video-body">
+      <div class="pf-video-wrapper">
+        <video class="pf-player" data-video-player controls playsinline preload="metadata">
+          <source src="/assets/portfolio/video-editing/film-logo-reveal.mp4" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+      </div>
+    </div>
+
+    <div class="pf-modal-footer">
+      <p class="pf-modal-desc" data-vid-desc></p>
+      <div class="pf-modal-meta-right">
+        <span class="pf-video-quality-tag"><span class="live-dot" aria-hidden="true"></span> HD 720p • 10s</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <section class="section" aria-labelledby="cs-h">
   <div class="container cs-split">

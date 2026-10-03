@@ -21,6 +21,7 @@ const port = Number(process.env.PORT) || 4173;
 const types = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml',
   '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.xml': 'application/xml', '.txt': 'text/plain',
+  '.mp4': 'video/mp4', '.m3u8': 'application/vnd.apple.mpegurl', '.ts': 'video/mp2t', '.json': 'application/json',
 };
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
@@ -127,11 +128,38 @@ createServer(async (req, res) => {
   let file = normalize(join(dist, url));
   if (!file.startsWith(dist)) return res.writeHead(403).end();
   try {
-    if ((await stat(file)).isDirectory()) {
+    let fileStat = await stat(file);
+    if (fileStat.isDirectory()) {
       if (!url.endsWith('/')) return res.writeHead(301, { Location: url + '/' }).end();
       file = join(file, 'index.html');
+      fileStat = await stat(file);
     }
-    res.writeHead(200, { 'Content-Type': types[extname(file)] || 'application/octet-stream' });
+    const ext = extname(file);
+    const contentType = types[ext] || 'application/octet-stream';
+    const range = req.headers.range;
+
+    if (range && ext === '.mp4') {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileStat.size - 1;
+      const chunksize = end - start + 1;
+      const { createReadStream } = await import('node:fs');
+      const fileStream = createReadStream(file, { start, end });
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${fileStat.size}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': contentType,
+      });
+      fileStream.pipe(res);
+      return;
+    }
+
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Content-Length': fileStat.size,
+      'Accept-Ranges': 'bytes',
+    });
     res.end(await readFile(file));
   } catch {
     res.writeHead(404, { 'Content-Type': types['.html'] });
