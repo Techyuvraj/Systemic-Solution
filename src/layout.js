@@ -160,17 +160,46 @@ export const breadcrumbLd = (trail) => ({
 
 const orgLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'ProfessionalService',
   name: brand.name,
+  alternateName: ['Systemic Solution Agency', 'Systemic Solution Digital Services'],
   url: SITE_URL + '/',
   logo: SITE_URL + '/assets/img/logo-systemic-solution.png',
+  image: SITE_URL + '/assets/img/og-image.png',
+  description:
+    'Systemic Solution provides professional web development, e-commerce store creation, graphic design, and video editing services for businesses worldwide.',
   email: brand.email,
-  telephone: brand.phones,
+  telephone: brand.phones[0],
+  currenciesAccepted: 'INR, USD, EUR, GBP, AED',
+  paymentAccepted: 'UPI, Net Banking, Credit Card, Debit Card, Bank Transfer',
+  priceRange: '₹₹',
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'IN',
+  },
+  areaServed: [
+    { '@type': 'Country', name: 'India' },
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Country', name: 'United Kingdom' },
+    { '@type': 'Country', name: 'United Arab Emirates' },
+  ],
+};
+
+const siteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: brand.name,
+  url: SITE_URL + '/',
+  description:
+    'Systemic Solution — Professional Web Development, E-Commerce, Graphic Design & Video Editing Agency',
+  inLanguage: 'en',
 };
 
 export const page = ({ path, seo, body, ld = [], bodyClass = '' }) => {
   const url = SITE_URL + path;
-  const scripts = [orgLd, ...ld].map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n');
+  const robotsMeta = seo.robots || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+  const defaultKeywords = 'web development, e-commerce development, graphic design, video editing, website design agency, systemic solution';
+  const scripts = [orgLd, siteLd, ...ld].map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n');
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -178,9 +207,17 @@ export const page = ({ path, seo, body, ld = [], bodyClass = '' }) => {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(seo.title)}</title>
 <meta name="description" content="${esc(seo.description)}">
+<meta name="keywords" content="${esc(seo.keywords || defaultKeywords)}">
+<meta name="author" content="${brand.name}">
+<meta name="publisher" content="${brand.name}">
+<meta name="robots" content="${robotsMeta}">
+<meta name="googlebot" content="${robotsMeta}">
+<meta name="bingbot" content="${robotsMeta}">
 <link rel="canonical" href="${url}">
+${process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" content="${esc(process.env.GOOGLE_SITE_VERIFICATION)}">\n` : ''}<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${brand.name}">
+<meta property="og:locale" content="en_IN">
 <meta property="og:title" content="${esc(seo.title)}">
 <meta property="og:description" content="${esc(seo.description)}">
 <meta property="og:url" content="${url}">
@@ -188,9 +225,17 @@ export const page = ({ path, seo, body, ld = [], bodyClass = '' }) => {
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${brand.name} — web development, e-commerce, graphic design and video editing">
+
+<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(seo.title)}">
+<meta name="twitter:description" content="${esc(seo.description)}">
+<meta name="twitter:image" content="${SITE_URL}/assets/img/og-image.png">
+<meta name="twitter:image:alt" content="${brand.name} — web development, e-commerce, graphic design and video editing">
+
 <meta name="theme-color" content="#060A1C">
 <meta name="color-scheme" content="dark">
+<link rel="manifest" href="/assets/site.webmanifest">
 <link rel="icon" href="/assets/img/favicon.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="/assets/img/favicon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">

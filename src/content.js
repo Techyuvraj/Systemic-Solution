@@ -533,7 +533,7 @@ export const legal = [
       description:
         'Read the Systemic Solution Privacy Policy to understand how information submitted through our website may be collected, used and protected.',
     },
-    updated: '[Insert Date]',
+    updated: 'October 2026',
     sections: [
       ['Introduction', ['Systemic Solution respects your privacy. This Privacy Policy explains how information may be collected, used and protected when you visit our website or contact us through our forms, email, phone, WhatsApp or other communication channels.']],
       ['Information We May Collect', [[
@@ -568,7 +568,7 @@ export const legal = [
       description:
         'Read the Systemic Solution Terms & Conditions covering project scope, payments, revisions, timelines, third-party services and final delivery.',
     },
-    updated: '[Insert Date]',
+    updated: 'October 2026',
     sections: [
       ['Scope of Services', ['Systemic Solution provides digital services according to the project scope, deliverables and quotation approved by the client. Work outside the approved scope may require a separate quotation.']],
       ['Client Responsibilities', [[
@@ -595,7 +595,7 @@ export const legal = [
       description:
         'Read the Systemic Solution Refund and Cancellation Policy covering project cancellations, payments, revisions and digital service deliverables.',
     },
-    updated: '[Insert Date]',
+    updated: 'October 2026',
     sections: [
       ['General Policy', ['Because digital services involve time, planning, design, development and production work, cancellation and refund requests are handled according to the project stage and the terms agreed in the quotation or project agreement.']],
       ['Before Work Begins', ['If a project is cancelled before work has started, any refund will be considered according to the approved quotation, payment terms and any applicable transaction or processing charges.']],

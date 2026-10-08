@@ -22,6 +22,7 @@ const types = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml',
   '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.xml': 'application/xml', '.txt': 'text/plain',
   '.mp4': 'video/mp4', '.m3u8': 'application/vnd.apple.mpegurl', '.ts': 'video/mp2t', '.json': 'application/json',
+  '.webmanifest': 'application/manifest+json',
 };
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
