@@ -4,7 +4,7 @@
 
 export const brand = {
   name: 'Systemic Solution',
-  phones: ['+91 7733897420', '+91 87690 38848', '+91 79769 13175'],
+  phones: ['+91 77338 97420', '+91 87690 38848', '+91 79769 13175'],
   email: 'mysystemicsolution@gmail.com',
 };
 
@@ -314,6 +314,16 @@ export const portfolio = {
       alt: 'Product Sticker and Label Design Mockup',
       summary: 'Product sticker and packaging label mockup highlighting textures, curved die-cuts, and premium print finish.',
       dimensions: '1920 × 1281',
+    },
+    {
+      id: 'pf-mockup-3',
+      title: 'Luxury Glassware & Champagne Mockup',
+      category: 'Mockup',
+      type: 'image',
+      image: '/assets/portfolio/mockup/luxury-glassware-product-mockup.jpg',
+      alt: 'Luxury Glassware and Champagne Flute Product Mockup',
+      summary: 'High-detail tabletop product photography mockup highlighting crystal glass reflections, sparkling beverage carbonation, and luxury lifestyle ambiance.',
+      dimensions: '1024 × 1024',
     },
     {
       id: 'pf-social-1',
