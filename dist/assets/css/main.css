@@ -1571,12 +1571,7 @@ body.menu-open .site-header {
 .about-hero .page-hero-visual img {
   max-width: 520px;
   margin-inline: auto;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .about-hero .page-hero-visual img {
-    animation: spin 90s linear infinite;
-  }
+  filter: drop-shadow(0 16px 36px rgba(14, 21, 56, 0.4));
 }
 
 .about-focus {
