@@ -85,11 +85,11 @@ const relatedServices = (current) => `
     <div class="section-head reveal"><h2 id="rel-h" class="h3">Other services</h2><a class="link-arrow" href="/services/">View All Services ${icon('arrow')}</a></div>
     <ul class="related-grid" role="list">
       ${services
-        .filter((s) => s.slug !== current)
-        .map(
-          (s) => `<li class="reveal"><a class="related-card" href="/${s.slug}/"><span class="rc-ico">${icon(s.icon)}</span><span class="rc-name">${s.name}</span><span class="rc-desc">${s.short}</span>${icon('arrow-ur', 'ico rc-arrow')}</a></li>`
-        )
-        .join('')}
+    .filter((s) => s.slug !== current)
+    .map(
+      (s) => `<li class="reveal"><a class="related-card" href="/${s.slug}/"><span class="rc-ico">${icon(s.icon)}</span><span class="rc-name">${s.name}</span><span class="rc-desc">${s.short}</span>${icon('arrow-ur', 'ico rc-arrow')}</a></li>`
+    )
+    .join('')}
     </ul>
   </div>
 </section>`;
@@ -162,10 +162,10 @@ const home = () => {
     </div>
     <ul class="gs-why-track" role="list" data-hscroll-track>
       ${h.why
-        .map(
-          (w, i) => `<li class="gs-why-item a-${accents[i % accents.length]}"><span class="gs-why-ico">${icon(w.icon)}</span><span class="gs-why-n" aria-hidden="true">${pad(i + 1)}</span><h3 class="gs-why-t">${w.t}</h3></li>`
-        )
-        .join('')}
+      .map(
+        (w, i) => `<li class="gs-why-item a-${accents[i % accents.length]}"><span class="gs-why-ico">${icon(w.icon)}</span><span class="gs-why-n" aria-hidden="true">${pad(i + 1)}</span><h3 class="gs-why-t">${w.t}</h3></li>`
+      )
+      .join('')}
     </ul>
   </div>
 </section>
@@ -178,15 +178,15 @@ const home = () => {
     </div>
     <ol class="gs-tools-rows" role="list">
       ${services
-        .map(
-          (s, i) => `<li class="gs-tool a-${accents[i % accents.length]} reveal">
+      .map(
+        (s, i) => `<li class="gs-tool a-${accents[i % accents.length]} reveal">
         <a class="gs-tool-art" href="/${s.slug}/" tabindex="-1" aria-hidden="true">${svcArt[s.slug]}</a>
         <h3 class="gs-tool-name"><a href="/${s.slug}/">${s.name}</a></h3>
         <p class="gs-tool-text">${s.short}</p>
         <a class="btn btn-ghost gs-tool-btn" href="/${s.slug}/">${s.name} ${icon('arrow')}</a>
       </li>`
-        )
-        .join('')}
+      )
+      .join('')}
     </ol>
   </div>
 </section>
@@ -199,14 +199,14 @@ const home = () => {
     </div>
     <ol class="gs-cards" role="list">
       ${C.processPage.steps
-        .map(
-          (st, i, all) => `<li class="gs-card a-${accents[i % accents.length]}" style="--i:${i}">
+      .map(
+        (st, i, all) => `<li class="gs-card a-${accents[i % accents.length]}" style="--i:${i}">
         <span class="gs-card-top"><span class="gs-card-ico">${icon(st.icon)}</span><span class="gs-card-n" aria-hidden="true">${pad(i + 1)}/${pad(all.length)}</span></span>
         <h3 class="gs-card-t">${st.t}</h3>
         <p>${st.d}</p>
       </li>`
-        )
-        .join('')}
+      )
+      .join('')}
     </ol>
   </div>
 </section>
@@ -243,13 +243,13 @@ const about = () => {
   const trail = [{ name: 'About Us', href: '/about/' }];
   const body = `
 ${pageHero({
-  trail,
-  label: 'About Us',
-  h1: a.h1,
-  intro: a.body[0],
-  visual: img('illo-about.svg', 'Abstract illustration of connected web, e-commerce, design and video services around the Systemic Solution mark', { w: 600, h: 600, eager: true }),
-  cls: 'about-hero',
-})}
+    trail,
+    label: 'About Us',
+    h1: a.h1,
+    intro: a.body[0],
+    visual: img('illo-about.svg', 'Abstract illustration of connected web, e-commerce, design and video services around the Systemic Solution mark', { w: 600, h: 600, eager: true }),
+    cls: 'about-hero',
+  })}
 
 <section class="section" aria-label="Our focus">
   <div class="container about-focus">
@@ -274,10 +274,10 @@ ${pageHero({
     </div>
     <ol class="approach-list" role="list">
       ${a.approach
-        .map(
-          (s, i) => `<li class="approach-item reveal"><span class="ap-num">${pad(i + 1)}</span><span class="ap-ico">${icon(s.icon)}</span><div><h3 class="h4">${s.t}</h3><p>${s.d}</p></div></li>`
-        )
-        .join('')}
+      .map(
+        (s, i) => `<li class="approach-item reveal"><span class="ap-num">${pad(i + 1)}</span><span class="ap-ico">${icon(s.icon)}</span><div><h3 class="h4">${s.t}</h3><p>${s.d}</p></div></li>`
+      )
+      .join('')}
     </ol>
   </div>
 </section>
@@ -310,8 +310,8 @@ ${pageHero({ trail, label: 'Our Services', h1: p.h1, intro: p.intro, cls: 'cente
 </nav>
 
 ${services
-  .map(
-    (s, i) => `
+      .map(
+        (s, i) => `
 <section class="section svc-feature${i % 2 ? ' flip' : ''}" id="${s.slug}" aria-labelledby="${s.slug}-h">
   <div class="container svc-feature-grid">
     <div class="svc-feature-media reveal">
@@ -327,8 +327,8 @@ ${services
     </div>
   </div>
 </section>`
-  )
-  .join('')}
+      )
+      .join('')}
 
 ${ctaBlock(p.cta, { href: '/request-a-quote/', label: 'Request a Quote' }, { href: '/pricing/', label: 'View Pricing' })}`;
   return page({ path: '/services/', seo: p.seo, body, ld: [breadcrumbLd(trail)] });
@@ -522,10 +522,10 @@ ${svcHero(s, v.h1, v.intro)}
     <div class="section-head reveal"><div>${eyebrow('Video Editing')}<h2 id="vs-h" class="h2">Video Editing Services</h2></div></div>
     <ol class="tracks" role="list">
       ${v.offer
-        .map(
-          ([t, ic], i) => `<li class="track reveal" style="--i:${i}"><span class="track-tc" aria-hidden="true">00:${pad(i * 6)}</span><span class="track-ico">${icon(ic)}</span><h3 class="track-t">${t}</h3><span class="track-bar" aria-hidden="true" style="--w:${38 + ((i * 23) % 55)}%"></span></li>`
-        )
-        .join('')}
+      .map(
+        ([t, ic], i) => `<li class="track reveal" style="--i:${i}"><span class="track-tc" aria-hidden="true">00:${pad(i * 6)}</span><span class="track-ico">${icon(ic)}</span><h3 class="track-t">${t}</h3><span class="track-bar" aria-hidden="true" style="--w:${38 + ((i * 23) % 55)}%"></span></li>`
+      )
+      .join('')}
     </ol>
   </div>
 </section>
@@ -567,9 +567,9 @@ const portfolioPage = () => {
   const trail = [{ name: 'Portfolio', href: '/portfolio/' }];
   const cards = p.projects.length
     ? p.projects
-        .map((pr) => {
-          if (pr.type === 'video') {
-            return `<li class="work-card work-card-video" data-cat="${slugify(pr.category)}" data-type="video" id="${pr.id}">
+      .map((pr) => {
+        if (pr.type === 'video') {
+          return `<li class="work-card work-card-video" data-cat="${slugify(pr.category)}" data-type="video" id="${pr.id}">
         <button type="button" class="work-card-trigger" data-video-trigger
           data-video-src="${pr.videoUrl}"
           data-title="${esc(pr.title)}"
@@ -601,9 +601,9 @@ const portfolioPage = () => {
           </figure>
         </button>
       </li>`;
-          }
+        }
 
-          return `<li class="work-card ${pr.isTall ? 'is-tall-design' : ''}" data-cat="${slugify(pr.category)}" data-type="image" id="${pr.id}">
+        return `<li class="work-card ${pr.isTall ? 'is-tall-design' : ''}" data-cat="${slugify(pr.category)}" data-type="image" id="${pr.id}">
         <button type="button" class="work-card-trigger" data-lightbox-trigger
           data-id="${pr.id}"
           data-src="${pr.image}"
@@ -634,16 +634,16 @@ const portfolioPage = () => {
           </figure>
         </button>
       </li>`;
-        })
-        .join('')
+      })
+      .join('')
     : p.categories
-        .map(
-          (c, i) => `<li class="work-card is-placeholder" data-cat="${slugify(c)}" id="${slugify(c)}">
+      .map(
+        (c, i) => `<li class="work-card is-placeholder" data-cat="${slugify(c)}" id="${slugify(c)}">
       <div class="work-media ph-${(i % 4) + 1}" aria-hidden="true"><span class="ph-ico">${icon(catIcon[c] || 'layout')}</span><span class="ph-lines"></span></div>
       <div class="work-cap"><span class="work-cat">${c}</span><p class="ph-note">Project to be added</p></div>
     </li>`
-        )
-        .join('');
+      )
+      .join('');
 
   const body = `
 ${pageHero({ trail, label: 'Portfolio', h1: p.h1, intro: p.intro, cls: 'center-hero' })}
@@ -809,13 +809,13 @@ ${pageHero({ trail, label: 'Our Process', h1: p.h1, cls: 'center-hero' })}
   <div class="container">
     <ol class="timeline" role="list">
       ${p.steps
-        .map(
-          (s, i) => `<li class="tl-step reveal" style="--i:${i}">
+      .map(
+        (s, i) => `<li class="tl-step reveal" style="--i:${i}">
         <span class="tl-node"><span class="tl-num">${pad(i + 1)}</span></span>
         <div class="tl-body"><span class="tl-ico">${icon(s.icon)}</span><h2 class="h4">${s.t}</h2><p>${s.d}</p></div>
       </li>`
-        )
-        .join('')}
+      )
+      .join('')}
     </ol>
   </div>
 </section>
@@ -977,10 +977,10 @@ ${pageHero({ trail, label: 'Request a Quote', h1: q.h1, intro: q.intro, cls: 'ce
         <legend><span class="q-num">02</span> Service Required <span class="req" aria-hidden="true">*</span></legend>
         <div class="svc-pick" data-svc-pick>
           ${serviceOptions
-            .map(
-              ([v, n], i) => `<label class="pick"><input type="radio" name="service" value="${v}" required${i === 0 ? ' aria-describedby="service-err"' : ''}><span class="pick-box">${icon(v === 'complete-package' ? 'layers' : svc(v).icon)}<span>${n}</span></span></label>`
-            )
-            .join('')}
+      .map(
+        ([v, n], i) => `<label class="pick"><input type="radio" name="service" value="${v}" required${i === 0 ? ' aria-describedby="service-err"' : ''}><span class="pick-box">${icon(v === 'complete-package' ? 'layers' : svc(v).icon)}<span>${n}</span></span></label>`
+      )
+      .join('')}
         </div>
         <p class="err err-group" id="service-err">${icon('info', 'ico ico-sm')} Please choose a service.</p>
 
@@ -1059,12 +1059,12 @@ ${pageHero({ trail, label: 'Legal', h1: l.title, cls: 'legal-hero compact' })}
     <article class="prose">
       <p class="updated">${icon('clock', 'ico ico-sm')} Last Updated: ${l.updated}</p>
       ${l.sections
-        .map(
-          ([h, blocks], i) => `<section id="s-${i + 1}" aria-labelledby="s-${i + 1}-h"><h2 id="s-${i + 1}-h">${i + 1}. ${h}</h2>${blocks
-            .map((b) => (Array.isArray(b) ? `<ul>${b.map((li) => `<li>${li}</li>`).join('')}</ul>` : `<p>${fill(b)}</p>`))
-            .join('')}</section>`
-        )
-        .join('')}
+      .map(
+        ([h, blocks], i) => `<section id="s-${i + 1}" aria-labelledby="s-${i + 1}-h"><h2 id="s-${i + 1}-h">${i + 1}. ${h}</h2>${blocks
+          .map((b) => (Array.isArray(b) ? `<ul>${b.map((li) => `<li>${li}</li>`).join('')}</ul>` : `<p>${fill(b)}</p>`))
+          .join('')}</section>`
+      )
+      .join('')}
     </article>
   </div>
 </section>`;
