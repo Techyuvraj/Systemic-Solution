@@ -551,8 +551,8 @@ const startMotion = () => {
       gsap.from(svg.querySelectorAll('.art-a, .art-b'), { scale: 0.4, opacity: 0, transformOrigin: '50% 50%', duration: 1.2, ease: 'back.out(1.8)', stagger: 0.12, scrollTrigger: { trigger: svg, start: 'top 85%' } });
     });
 
-    // Footer wordmark slides up letter group by group
-    gsap.from('.footer-word span', { yPercent: 40, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.15, scrollTrigger: { trigger: '.footer-word', start: 'top 95%' } });
+    // Footer wordmark slides up
+    gsap.from('.footer-wordmark', { y: 40, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.footer-wordmark-wrap', start: 'top 95%' } });
   });
 
   // Why cards: pin the section and scroll the track sideways on wide screens

@@ -131,7 +131,9 @@ export const footer = () => `
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-word" aria-hidden="true"><span>Systemic</span><span>Solution</span></p>
+      <div class="footer-wordmark-wrap">
+        <img class="footer-wordmark" src="/assets/img/footer-wordmark.png" alt="${brand.name}" width="1024" height="107" loading="lazy" decoding="async">
+      </div>
       <div class="footer-meta">
         <p>${brand.name} © <span data-year>${new Date().getFullYear()}</span></p>
         <ul class="footer-legal" role="list"><li><a href="/privacy-policy/">Privacy Policy</a></li><li><a href="/terms-and-conditions/">Terms &amp; Conditions</a></li><li><a href="/refund-cancellation-policy/">Refund / Cancellation Policy</a></li></ul>

@@ -4254,22 +4254,24 @@ textarea:user-invalid~.err,
   padding-bottom: 36px;
 }
 
-.footer-word {
+.footer-wordmark-wrap {
   grid-column: 1 / -1;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  gap: .2em;
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: min(11rem, calc((100vw - var(--gutter) * 2) / 7.3));
-  line-height: .86;
-  letter-spacing: -.06em;
-  white-space: nowrap;
-  background: var(--grad-brand);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 8px;
+  overflow: hidden;
+}
+
+.footer-wordmark {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
 }
 
 .footer-meta {
@@ -4293,6 +4295,7 @@ textarea:user-invalid~.err,
 
 .footer-legal a {
   color: var(--muted);
+  transition: color .2s;
 }
 
 .footer-legal a:hover {
@@ -4305,6 +4308,12 @@ textarea:user-invalid~.err,
   gap: 10px;
   font-size: 1rem;
   font-weight: 500;
+  color: var(--text);
+  transition: color .2s;
+}
+
+.to-top:hover {
+  color: var(--cyan);
 }
 
 .to-top .ico {
@@ -4312,6 +4321,43 @@ textarea:user-invalid~.err,
   width: 22px;
   height: 22px;
   color: var(--cyan);
+  transition: transform .2s ease;
+}
+
+.to-top:hover .ico {
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 768px) {
+  .footer-bottom {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-bottom: 28px;
+  }
+
+  .footer-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .footer-legal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+
+  .to-top {
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-legal {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 /* ---------- Scroll reveal ---------- */
