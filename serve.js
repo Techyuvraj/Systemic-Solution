@@ -26,7 +26,10 @@ const types = {
 };
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'contact@systemicsolution.in';
+const NOTIFICATION_EMAIL =
+  process.env.NOTIFICATION_EMAIL && !process.env.NOTIFICATION_EMAIL.includes('mysystemicsolution')
+    ? process.env.NOTIFICATION_EMAIL
+    : 'contact@systemicsolution.in';
 
 async function sendResendEmail(payload) {
   const formLabel = payload.form_type === 'quote' ? 'Quotation Request' : 'Website Enquiry';

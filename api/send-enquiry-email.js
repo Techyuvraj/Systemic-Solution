@@ -1,5 +1,8 @@
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'contact@systemicsolution.in';
+const NOTIFICATION_EMAIL =
+  process.env.NOTIFICATION_EMAIL && !process.env.NOTIFICATION_EMAIL.includes('mysystemicsolution')
+    ? process.env.NOTIFICATION_EMAIL
+    : 'contact@systemicsolution.in';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
