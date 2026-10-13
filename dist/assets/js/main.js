@@ -462,7 +462,7 @@ document.querySelectorAll('[data-enquiry-form]').forEach((form) => {
 
 
 
-      // Send branded notification email to mysystemicsolution@gmail.com
+      // Send branded notification email to contact@systemicsolution.in
       try {
         await fetch('/api/send-enquiry-email', {
           method: 'POST',
@@ -481,8 +481,23 @@ document.querySelectorAll('[data-enquiry-form]').forEach((form) => {
       const isRls = err.message && err.message.toLowerCase().includes('row-level security');
       const detail = isRls
         ? 'Database RLS policy is blocking inserts. Please run the SQL policy in Supabase.'
-        : 'Please check your connection and try again, or contact us directly.';
-      show('Your enquiry could not be sent.', detail, { error: true });
+        : 'Please check your connection and try again, or email us directly at contact@systemicsolution.in.';
+      const mailtoBtn = statusBox.querySelector('[data-fs-mailto]');
+      if (mailtoBtn) {
+        mailtoBtn.href = `mailto:contact@systemicsolution.in?subject=${encodeURIComponent(form.dataset.subject || 'Website Enquiry')}&body=${encodeURIComponent(body)}`;
+      }
+      const copyBtn = statusBox.querySelector('[data-fs-copy]');
+      if (copyBtn) {
+        copyBtn.onclick = async () => {
+          try {
+            await navigator.clipboard.writeText(body);
+            const orig = copyBtn.innerHTML;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.innerHTML = orig; }, 2000);
+          } catch (_) {}
+        };
+      }
+      show('Your enquiry could not be sent.', detail, { error: true, actions: true });
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;

@@ -5,7 +5,7 @@
 export const brand = {
   name: 'Systemic Solution',
   phones: ['+91 77338 97420', '+91 87690 38848', '+91 79769 13175'],
-  email: 'mysystemicsolution@gmail.com',
+  email: 'contact@systemicsolution.in',
 };
 
 export const siteCta =

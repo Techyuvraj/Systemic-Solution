@@ -1,5 +1,5 @@
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'mysystemicsolution@gmail.com';
+const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'contact@systemicsolution.in';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Systemic Solution <onboarding@resend.dev>',
+        from: process.env.FROM_EMAIL || 'Systemic Solution <onboarding@resend.dev>',
         to: [NOTIFICATION_EMAIL],
         reply_to: payload.email || undefined,
         subject: `✨ New ${formLabel} from ${payload.name || 'Visitor'} (${payload.business || 'Individual'})`,

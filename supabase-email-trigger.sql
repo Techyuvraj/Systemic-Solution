@@ -1,7 +1,7 @@
 -- ====================================================================
 -- Automated Email Notification Trigger for Systemic Solution
 -- Whenever an enquiry is inserted into Supabase, this trigger
--- automatically sends a branded HTML email to mysystemicsolution@gmail.com
+-- automatically sends a branded HTML email to contact@systemicsolution.in
 -- ====================================================================
 -- Requirements:
 -- 1. Free API key from Resend: https://resend.com (100 free emails/day)
@@ -17,7 +17,7 @@ create or replace function public.send_enquiry_notification()
 returns trigger as $$
 declare
   resend_api_key text := 're_HT4oNGzz_FzoGnusbYCByBv8HSGgEwu8k';
-  notification_email text := 'mysystemicsolution@gmail.com';
+  notification_email text := 'contact@systemicsolution.in';
   email_subject text;
   badge_color text;
   form_label text;
