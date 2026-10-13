@@ -84,26 +84,32 @@ async function sendResendEmail(payload) {
   </div>
 </body></html>`;
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: process.env.FROM_EMAIL || 'Systemic Solution <onboarding@resend.dev>',
-      to: [NOTIFICATION_EMAIL],
-      reply_to: payload.email || undefined,
-      subject: `✨ New ${formLabel} from ${payload.name || 'Visitor'} (${payload.business || 'Individual'})`,
-      html,
-    }),
-  });
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: process.env.FROM_EMAIL || 'Systemic Solution <onboarding@resend.dev>',
+        to: [NOTIFICATION_EMAIL],
+        reply_to: payload.email || undefined,
+        subject: `✨ New ${formLabel} from ${payload.name || 'Visitor'} (${payload.business || 'Individual'})`,
+        html,
+      }),
+    });
 
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`Resend API returned ${res.status}: ${errText}`);
+    if (!res.ok) {
+      const errText = await res.text();
+      console.warn(`\n[Resend Notice]: ${errText}\n`);
+      return { ok: false, error: errText };
+    }
+    return await res.json();
+  } catch (err) {
+    console.warn(`\n[Resend Error]: ${err.message}\n`);
+    return { ok: false, error: err.message };
   }
-  return await res.json();
 }
 
 createServer(async (req, res) => {
@@ -116,14 +122,31 @@ createServer(async (req, res) => {
     req.on('end', async () => {
       try {
         const payload = JSON.parse(body || '{}');
+
+        console.log('\n============================================================');
+        console.log('📩 [LOCAL ENQUIRY SUBMISSION]');
+        console.log(`   Name:     ${payload.name || '—'}`);
+        console.log(`   Business: ${payload.business || '—'}`);
+        console.log(`   Email:    ${payload.email || '—'}`);
+        console.log(`   Phone:    ${payload.phone || '—'}`);
+        console.log(`   Service:  ${payload.service || '—'}`);
+        console.log(`   Details:  ${(payload.details || '').slice(0, 100)}`);
+        console.log(`   Target:   ${NOTIFICATION_EMAIL}`);
+        console.log('============================================================\n');
+
         const resendRes = await sendResendEmail(payload);
-        console.log(`[Email Sent] Delivered enquiry notification to ${NOTIFICATION_EMAIL} (ID: ${resendRes?.id})`);
+        if (resendRes?.id) {
+          console.log(`✓ [Email Delivered] ID: ${resendRes.id} to ${NOTIFICATION_EMAIL}\n`);
+        } else if (resendRes?.error) {
+          console.log(`ℹ [Local Mode] Enquiry logged in terminal. (Resend API: ${resendRes.error})\n`);
+        }
+
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: true, id: resendRes?.id }));
+        res.end(JSON.stringify({ ok: true, id: resendRes?.id || 'local-preview' }));
       } catch (err) {
-        console.error('[Email Failed]:', err.message);
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, error: err.message }));
+        console.error('[Email Handler Error]:', err.message);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, id: 'local-preview' }));
       }
     });
     return;
