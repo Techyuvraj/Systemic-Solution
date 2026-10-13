@@ -1,10 +1,11 @@
 # Dependencies
 node_modules/
 
-# Local Environment Variables
+# Local Environment Variables & Private Scripts
 .env
 .env.local
 .env.*.local
+*.local.sql
 
 # OS Files
 .DS_Store

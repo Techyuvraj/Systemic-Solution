@@ -5,7 +5,7 @@
 -- ====================================================================
 -- Requirements:
 -- 1. Free API key from Resend: https://resend.com (100 free emails/day)
--- 2. Paste your Resend API key into line 25 below (starts with re_...)
+-- 2. Paste your Resend API key into line 20 below (starts with re_...)
 -- 3. Run this script in the Supabase SQL Editor
 -- ====================================================================
 
@@ -16,7 +16,7 @@ create extension if not exists pg_net;
 create or replace function public.send_enquiry_notification()
 returns trigger as $$
 declare
-  resend_api_key text := 're_HT4oNGzz_FzoGnusbYCByBv8HSGgEwu8k';
+  resend_api_key text := 'YOUR_RESEND_API_KEY_HERE';
   notification_email text := 'contact@systemicsolution.in';
   email_subject text;
   badge_color text;
