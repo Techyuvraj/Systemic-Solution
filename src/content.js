@@ -4,7 +4,7 @@
 
 export const brand = {
   name: 'Systemic Solution',
-  phones: ['+91 77338 97420', '+91 87690 38848', '+91 79769 13175'],
+  phones: ['+91 87648 29687'],
   email: 'contact@systemicsolution.in',
 };
 

@@ -7,6 +7,10 @@ node_modules/
 .env.*.local
 *.local.sql
 
+# Archives / Backups
+*.zip
+
 # OS Files
 .DS_Store
 Thumbs.db
+
