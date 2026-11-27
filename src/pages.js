@@ -1076,6 +1076,7 @@ ${pageHero({ trail, label: 'Legal', h1: l.title, cls: 'legal-hero compact' })}
 const notFound = () =>
   page({
     path: '/404.html',
+    adsense: false,
     seo: { title: 'Page not found | Systemic Solution', description: 'The page you are looking for could not be found.' },
     body: `<section class="page-hero center-hero nf"><div class="hero-bg" aria-hidden="true"><span class="orb orb-1"></span><span class="orb orb-2"></span></div>
   <div class="container"><p class="nf-code grad-text" aria-hidden="true">404</p><h1 class="h1">Page not found</h1>

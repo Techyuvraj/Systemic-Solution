@@ -197,7 +197,7 @@ const siteLd = {
   inLanguage: 'en',
 };
 
-export const page = ({ path, seo, body, ld = [], bodyClass = '' }) => {
+export const page = ({ path, seo, body, ld = [], bodyClass = '', adsense = true }) => {
   const url = SITE_URL + path;
   const robotsMeta = seo.robots || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
   const defaultKeywords = 'web development, e-commerce development, graphic design, video editing, website design agency, systemic solution';
@@ -250,7 +250,7 @@ ${process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" 
 <script src="/assets/js/supabase-config.js" defer></script>
 <script src="/assets/js/main.js" defer></script>
 ${scripts}
-</head>
+${adsense ? '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4450430195273502" crossorigin="anonymous"></script>\n' : ''}</head>
 <body class="${bodyClass}">
 ${sprite()}
 ${header(path)}
