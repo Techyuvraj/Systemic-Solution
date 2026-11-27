@@ -84,13 +84,18 @@ Allow: /
 Sitemap: ${SITE_URL}/sitemap.xml
 `;
 
+const adsTxt = `google.com, pub-4450430195273502, DIRECT, f08c47fec0942fa0\n`;
+
 writeFileSync(join(out, 'sitemap.xml'), sitemapXml);
 writeFileSync(join(out, 'robots.txt'), robotsTxt);
+writeFileSync(join(out, 'ads.txt'), adsTxt);
 
-// Also write robots.txt and sitemap.xml to root for static serving flexibility
+// Also write robots.txt, sitemap.xml and ads.txt to root for static serving flexibility
 writeFileSync(join(root, 'robots.txt'), robotsTxt);
 writeFileSync(join(root, 'sitemap.xml'), sitemapXml);
+writeFileSync(join(root, 'ads.txt'), adsTxt);
 
 console.log(`✓ Built ${pages.length + extraPages.length} pages → dist/`);
 console.log(`✓ Generated sitemap.xml with ${pages.length} URLs`);
 console.log(`✓ Generated robots.txt pointing to ${SITE_URL}/sitemap.xml`);
+console.log('✓ Generated ads.txt');

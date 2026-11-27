@@ -197,6 +197,8 @@ const siteLd = {
   inLanguage: 'en',
 };
 
+const ADSENSE_CLIENT = 'ca-pub-4450430195273502';
+
 export const page = ({ path, seo, body, ld = [], bodyClass = '', adsense = true }) => {
   const url = SITE_URL + path;
   const robotsMeta = seo.robots || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
@@ -216,7 +218,7 @@ export const page = ({ path, seo, body, ld = [], bodyClass = '', adsense = true 
 <meta name="googlebot" content="${robotsMeta}">
 <meta name="bingbot" content="${robotsMeta}">
 <link rel="canonical" href="${url}">
-${process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" content="${esc(process.env.GOOGLE_SITE_VERIFICATION)}">\n` : ''}<!-- Open Graph / Facebook -->
+${process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" content="${esc(process.env.GOOGLE_SITE_VERIFICATION)}">\n` : ''}${adsense ? `<meta name="google-adsense-account" content="${ADSENSE_CLIENT}">\n` : ''}<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${brand.name}">
 <meta property="og:locale" content="en_IN">
@@ -250,7 +252,7 @@ ${process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" 
 <script src="/assets/js/supabase-config.js" defer></script>
 <script src="/assets/js/main.js" defer></script>
 ${scripts}
-${adsense ? '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4450430195273502" crossorigin="anonymous"></script>\n' : ''}</head>
+${adsense ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>\n` : ''}</head>
 <body class="${bodyClass}">
 ${sprite()}
 ${header(path)}
